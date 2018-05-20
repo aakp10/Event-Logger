@@ -7,29 +7,11 @@
 
 function getContextualAddOn(event)
 {
-    var card = CardService.newCardBuilder();
-    
-    //set the header to the cardBuilder
-    var cardHeader = CardService.newCardHeader().setTitle("Schedule your appointments");
-    card.setHeader(cardHeader);
-    
-    //get a new cardSection
-    var appointmentSection = CardService.newCardSection();
-    appointmentSection.addWidget(CardService.newTextInput()
-                                            .setFieldName("Date")
-                                            .setTitle("Date"));
-    appointmentSection.addWidget(CardService.newTextInput()
-                                            .setTitle("Time")
-                                            .setFieldName("Time"));
-    appointmentSection.addWidget(CardService.newTextInput()
-                                            .setTitle("Description")
-                                            .setFieldName("Description"));
-    appointmentSection.addWidget(CardService.newTextInput()
-                                            .setTitle("Calendar Invite")
-                                            .setFieldName("Calendar Invite"));
-
-    card.addSection(appointmentSection);
-
-    return [card.build()];
-
+    //fetch the active mail
+    var mail = getActiveMailContent(event);
+    //parse this mail to get the field entries
+    var inviteData = parseMail(mail);
+    //populate the section widgets w/ the previous prefills
+    var inviteCard = createInvite(inviteData/*, opt_status*/);
+    return [inviteCard.build()];
 }
